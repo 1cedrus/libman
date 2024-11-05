@@ -42,6 +42,7 @@
             </tr>
         </table>
         <button style="margin-top: 20px" type="submit">Thêm mới</button>
+        <a href="gdTimKiemTaiLieuTheoMa.jsp" class="button simple">Quay lại</a>
     </form>
 </main>
 <%@ include file="layout/cuoiTrang.jsp" %>

@@ -17,11 +17,6 @@
 <%@ include file="layout/dauTrang.jsp" %>
 <main>
     <div style="flex: 1; display: flex; flex-direction: column; margin: 20px 100px">
-        <form action="xlTimKiemTaiLieuTheoTen.jsp" method="post" style="display: flex; gap: 5px; width: 100%">
-            <input type="text" name="tuKhoa" placeholder="Nhà cung cấp A ..." required>
-            <button style="width: 150px" type="submit">Tìm kiếm</button>
-        </form>
-
         <%
             List<NhaCungCap778> danhSachNhaCungCap = (List<NhaCungCap778>) session.getAttribute("danhSachNhaCungCap");
 

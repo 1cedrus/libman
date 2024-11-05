@@ -30,6 +30,7 @@
 
     List<TaiLieuNhapChiTiet778> danhSachTaiLieuNhapChiTiet = new ArrayList<>();
     session.setAttribute("danhSachTaiLieuNhapChiTiet", danhSachTaiLieuNhapChiTiet);
+    session.removeAttribute("taiLieu");
 
     response.sendRedirect("gdTimKiemTaiLieuTheoMa.jsp");
 %>

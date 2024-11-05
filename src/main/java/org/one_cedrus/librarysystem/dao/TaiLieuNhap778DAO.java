@@ -4,7 +4,7 @@ import org.one_cedrus.librarysystem.model.TaiLieuNhap778;
 import org.one_cedrus.librarysystem.model.TaiLieuNhapChiTiet778;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class TaiLieuNhap778DAO extends DAO778 {
@@ -13,8 +13,10 @@ public class TaiLieuNhap778DAO extends DAO778 {
 
     public boolean taoTaiLieuNhap(TaiLieuNhap778 taiLieuNhap, List<TaiLieuNhapChiTiet778> danhSachTaiLieuNhapChiTiet) {
         try {
+            // Start transaction 
+            con.setAutoCommit(false);
+
             PreparedStatement ps;
-            ResultSet rs;
 
             String sql = "INSERT INTO tblTaiLieuNhap778(maNhanVien, maNhaCungCap, giaNhap) VALUES(?, ?, ?);";
 
@@ -45,11 +47,21 @@ public class TaiLieuNhap778DAO extends DAO778 {
                 ps.executeUpdate();
             }
 
+            con.commit();
+            con.setAutoCommit(true);
+
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+                con.setAutoCommit(true);
+                e.printStackTrace();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
 
             return false;
         }
+
     }
 }

@@ -25,12 +25,15 @@ public class NhaCungCap778DAO extends DAO778 {
 
             ps.executeUpdate();
 
-            return true;
+            if (ps.executeUpdate() > 0) {
+                return true;
+            } 
         } catch (Exception e) {
             e.printStackTrace();
 
-            return false;
         }
+
+        return false;
     }
 
     public ArrayList<NhaCungCap778> timKiemNhaCungCapTheoTen(String tenNhaCungCap) {

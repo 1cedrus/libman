@@ -1,61 +1,3 @@
--- CREATE TABLE IF NOT EXISTS tblThanhVien778 (
---     maThanhVien INTEGER PRIMARY KEY AUTOINCREMENT,
---     tenDangNhap VARCHAR(50) NOT NULL UNIQUE,
---     matKhau VARCHAR(50) NOT NULL,
---     email VARCHAR(50) NOT NULL UNIQUE ,
---     soDienThoai VARCHAR(15) NOT NULL UNIQUE,
---     viTri INTEGER DEFAULT 3,
---     FOREIGN KEY (viTri) REFERENCES tblViTri778(maViTri) ON DELETE SET NULL
--- );
---
--- CREATE TABLE IF NOT EXISTS tblViTri778 (
---     maViTri INTEGER PRIMARY KEY AUTOINCREMENT,
---     tenViTri VARCHAR(50) NOT NULL
--- );
---
--- INSERT INTO tblViTri778 (tenViTri) VALUES ('QuanLy'), ('NhanVien'), ('BanDoc');
---
--- INSERT INTO tblThanhVien778 (tenDangNhap, matKhau, email, soDienThoai, viTri) VALUES ('quanLy', 'quanLy', 'quanLy@library.com', '0123456781', 1);
--- INSERT INTO tblThanhVien778 (tenDangNhap, matKhau, email, soDienThoai, viTri) VALUES ('nhanVien', 'nhanVien', 'nhanVien@library.com', '0123456782', 2);
--- INSERT INTO tblThanhVien778 (tenDangNhap, matKhau, email, soDienThoai, viTri) VALUES ('banDoc01', 'banDoc01', 'banDoc01@library.com', '0123456783', 3);
---
--- CREATE TABLE IF NOT EXISTS tblDiaChi778 (
---     maDiaChi INTEGER PRIMARY KEY AUTOINCREMENT,
---     moTa VARCHAR(255) NOT NULL,
---     phuongXa VARCHAR(50) NOT NULL,
---     quanHuyen VARCHAR(50) NOT NULL,
---     tinhThanhPho VARCHAR(50) NOT NULL
--- );
---
--- CREATE TABLE IF NOT EXISTS tblNhaCungCap778 (
---     maNhaCungCap INTEGER PRIMARY KEY AUTOINCREMENT,
---     tenNhaCungCap VARCHAR(50) NOT NULL,
---     soDienThoai VARCHAR(15) NOT NULL,
---     email VARCHAR(50) NOT NULL,
---     diaChi INTEGER,
---     FOREIGN KEY (diaChi) REFERENCES tblDiaChi778(maDiaChi) ON DELETE SET NULL
--- );
---
--- CREATE TABLE IF NOT EXISTS tblTheLoai778 (
---     maTheLoai INTEGER PRIMARY KEY AUTOINCREMENT,
---     tenTheLoai VARCHAR(50) NOT NULL,
---     moTa VARCHAR(255) NOT NULL
--- );
---
--- CREATE TABLE IF NOT EXISTS tblTaiLieu778 (
---     maTaiLieu INTEGER PRIMARY KEY AUTOINCREMENT,
---     tenTaiLieu VARCHAR(50) NOT NULL,
---     nhaXuatBan VARCHAR(50) NOT NULL,
---     namXuatBan VARCHAR(4) NOT NULL,
---     tacGia VARCHAR(255) NOT NULL,
---     moTa VARCHAR(255) NOT NULL,
---     soLuong INTEGER NOT NULL,
---     theLoai INTEGER,
---     nhaCungCap INTEGER,
---     FOREIGN KEY (theLoai) REFERENCES tblTheLoai778(maTheLoai) ON DELETE SET NULL,
---     FOREIGN KEY (nhaCungCap) REFERENCES tblNhaCungCap778(maNhaCungCap) ON DELETE SET NULL,
--- );
-
 CREATE TABLE IF NOT EXISTS tblThanhVien778 (
     maThanhVien INTEGER PRIMARY KEY AUTOINCREMENT,
     tenDangNhap VARCHAR(64) UNIQUE NOT NULL,
@@ -108,13 +50,13 @@ CREATE TABLE IF NOT EXISTS tblTaiLieuNhap778 (
 );
 
 CREATE TABLE IF NOT EXISTS tblTaiLieuNhapChiTiet778 (
-    maChiTietTaiLieu INTEGER PRIMARY KEY AUTOINCREMENT,
     maTaiLieuNhap INTEGER,
     maTaiLieu INTEGER,
     soLuongNhap INTEGER NOT NULL,
     donGia REAL NOT NULL,
     FOREIGN KEY (maTaiLieu) REFERENCES tblTaiLieu778(maTaiLieu),
-    FOREIGN KEY (maTaiLieuNhap) REFERENCES tblTaiLieuNhap778(maTaiLieuNhap)
+    FOREIGN KEY (maTaiLieuNhap) REFERENCES tblTaiLieuNhap778(maTaiLieuNhap),
+    PRIMARY KEY (maTaiLieuNhap, maTaiLieu)
 );
 
 -- Sample data for tblNhaCungCap778
@@ -152,14 +94,14 @@ CREATE TABLE IF NOT EXISTS tblTaiLieuMuon778 (
 );
 
 CREATE TABLE IF NOT EXISTS tblTaiLieuMuonChiTiet778 (
-    maTaiLieuMuonChiTiet INTEGER PRIMARY KEY AUTOINCREMENT,
     maTaiLieuMuon INTEGER,
     maTaiLieu INTEGER,
     ngayTra TIMESTAMP, -- NULL if not returned yet
     soLuong INTEGER NOT NULL,
     hanTra DATE, -- Due date for returning the document
     FOREIGN KEY (maTaiLieu) REFERENCES tblTaiLieu778(maTaiLieu),
-    FOREIGN KEY (maTaiLieuMuon) REFERENCES tblTaiLieuMuon778(maTaiLieuMuon)
+    FOREIGN KEY (maTaiLieuMuon) REFERENCES tblTaiLieuMuon778(maTaiLieuMuon),
+    PRIMARY KEY (maTaiLieuMuon, maTaiLieu)
 );
 
 CREATE TABLE IF NOT EXISTS tblTheDoc778 (
@@ -167,18 +109,20 @@ CREATE TABLE IF NOT EXISTS tblTheDoc778 (
     maBanDoc INTEGER,
     ngayTao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ngayHetHan DATE,
+    FOREIGN KEY (maBanDoc) REFERENCES tblThanhVien778(maThanhVien) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS tblPhieuTaoTheDoc778 (
+    maPhieuTaoTheDoc INTEGER PRIMARY KEY AUTOINCREMENT,
+    maNhanVien INTEGER,
+    maBanDoc INTEGER,
+    ngayTao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (maNhanVien) REFERENCES tblThanhVien778(maThanhVien),
     FOREIGN KEY (maBanDoc) REFERENCES tblThanhVien778(maThanhVien)
 );
 
-CREATE TABLE IF NOT EXISTS tblThongSo778 (
-    maThongSo INTEGER PRIMARY KEY AUTOINCREMENT,
-    maTaiLieu INTEGER,
-    maThanhVien INTEGER,
-    maNhaCungCap INTEGER,
-    soLanMuon INTEGER DEFAULT 0, -- Number of times the document has been borrowed
-    soLanNhap INTEGER DEFAULT 0, -- Quantity of documents imported
-    FOREIGN KEY (maTaiLieu) REFERENCES tblTaiLieu778(maTaiLieu),
-    FOREIGN KEY (maThanhVien) REFERENCES tblThanhVien778(maThanhVien),
-    FOREIGN KEY (maNhaCungCap) REFERENCES tblNhaCungCap778(maNhaCungCap)
+CREATE TABLE IF NOT EXISTS tblTrangThaiPhieuTao778 (
+    maTrangThaiPhieuTao INTEGER PRIMARY KEY AUTOINCREMENT,
+    tenTrangThai VARCHAR(64) NOT NULL
 );
 

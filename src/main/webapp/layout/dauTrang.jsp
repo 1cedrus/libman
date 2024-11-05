@@ -7,16 +7,18 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header class="simple">
-  <div style="display: flex; align-items: center; justify-content: space-between">
-    <div style="display: flex; gap: 20px">
-      <p>Chào mừng <%=thanhVien.getHoVaTen()%> đến với thư viện</p>
+    <div style="display: flex; align-items: center; justify-content: space-between">
+        <div style="display: flex; gap: 20px">
+            <p>Chào mừng <%=thanhVien.getHoVaTen()%> đến với thư viện</p>
+        </div>
+        <div>
+            <% if (thanhVien.getViTri().getTen().equals("BanDoc")) { %>
+            <a href="gdTimKiemTaiLieu.jsp">Tìm kiếm tài liệu</a>
+            <% } %>
+            <% if (thanhVien.getViTri().getTen().equals("NhanVien") || thanhVien.getViTri().getTen().equals("QuanLy")) { %>
+            - <a href="gdNhapTaiLieu.jsp">Nhập tài liệu</a>
+            <% } %>
+        </div>
+        <a href="xlDangXuat.jsp">Đăng xuất</a>
     </div>
-    <div>
-      <a href="gdTimKiemTaiLieu.jsp">Tìm kiếm tài liệu</a>
-      <% if (thanhVien.getViTri().getTen().equals("NhanVien") || thanhVien.getViTri().getTen().equals("QuanLy")) { %>
-       - <a href="gdNhapTaiLieu.jsp">Nhập tài liệu</a>
-      <% } %>
-    </div>
-    <a href="xlDangXuat.jsp">Đăng xuất</a>
-  </div>
 </header>

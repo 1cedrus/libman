@@ -26,14 +26,14 @@ public class TaiLieu778DAO extends DAO778 {
             ps.setLong(6, taiLieu778.getSoLuong());
             ps.setLong(7, taiLieu778.getSoLuongTrongKho());
 
-            ps.executeUpdate();
-
-            return true;
+            if (ps.executeUpdate() > 0) {
+                return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
-
-            return false;
         }
+
+        return false;
     }
 
     public TaiLieu778 timKiemTaiLieuTheoMa(String maTaiLieu) {

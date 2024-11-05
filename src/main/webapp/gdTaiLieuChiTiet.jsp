@@ -17,11 +17,6 @@
 <%@ include file="layout/dauTrang.jsp" %>
 <main>
     <div style="flex: 1; display: flex; flex-direction: column; margin: 20px 100px">
-        <form action="xlTimKiemTaiLieuTheoTen.jsp" method="post" style="display: flex; gap: 5px; width: 100%">
-            <input type="text" name="tuKhoa" placeholder="Tài liệu A..." required>
-            <button style="width: 150px;" type="submit">Tìm kiếm</button>
-        </form>
-
         <%
             List<TaiLieu778> danhSachTaiLieu = (List<TaiLieu778>) session.getAttribute("danhSachTaiLieu");
 
@@ -53,14 +48,6 @@
             <tr>
                 <th>Xuất bản</th>
                 <td><%=taiLieu.getNamXuatBan()%></td>
-            </tr>
-            <tr>
-                <th>Số lượng</th>
-                <td><%=taiLieu.getSoLuong()%></td>
-            </tr>
-            <tr>
-                <th>Số lượng có sẵn</th>
-                <td><%=taiLieu.getSoLuongTrongKho()%></td>
             </tr>
         </table>
         <%
