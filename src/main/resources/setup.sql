@@ -126,3 +126,5 @@ CREATE TABLE IF NOT EXISTS tblTrangThaiPhieuTao778 (
     tenTrangThai VARCHAR(64) NOT NULL
 );
 
+INSERT INTO tblTrangThaiPhieuTao778 (tenTrangThai) VALUES ('Đã duyệt'), ('Chưa duyệt');
+
